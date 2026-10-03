@@ -1,2 +1,813 @@
-# foryoupage
-foryoupagemylovebaby
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti Mi Amor</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #FFFBFC 0%, #fff5f9 45%, #fef1f6 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #1a1a2e;
+      overflow-x: hidden;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(255,251,252,0.9) 0%, rgba(254,241,246,0.9) 100%);
+      position: relative;
+      box-shadow: 0 20px 50px rgba(244, 114, 182, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      padding: 30px 20px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* PANTALLA 1: SOBRE CARTA CON ANIMACIÓN FLOAT */
+    #screen-1 {
+      background: #240c16;
+      color: white;
+      text-align: center;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 260px;
+      height: 190px;
+      margin-bottom: 40px;
+    }
+
+    .letter-note {
+      position: absolute;
+      top: -35px;
+      left: 15px;
+      right: 15px;
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      color: #333;
+      z-index: 1;
+      animation: floatNote 3s ease-in-out infinite;
+    }
+
+    .letter-note p {
+      font-style: italic;
+      font-size: 1rem;
+      color: #2a1b24;
+    }
+
+    .envelope-body {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 170px;
+      background: #fdf8f5;
+      border-radius: 24px;
+      z-index: 2;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .envelope-heart {
+      width: 50px;
+      height: 50px;
+      background-color: #f472b6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.4);
+    }
+
+    .btn-step1 {
+      background: transparent;
+      border: none;
+      color: #cca8b6;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* PANTALLA 2: BIENVENIDA */
+    .badge-tag {
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #ec4899;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.15);
+      margin-bottom: 20px;
+      border: 1px solid rgba(244, 114, 182, 0.2);
+    }
+
+    .mascot-img {
+      width: 130px;
+      height: 130px;
+      background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      box-shadow: 0 15px 35px rgba(236, 72, 153, 0.3);
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .main-title {
+      font-size: 2.2rem;
+      color: #1a1a2e;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .main-title span {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    .sub-text {
+      font-size: 0.9rem;
+      color: rgba(26,26,46,0.6);
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+    }
+
+    /* PANTALLA PRINCIPAL DE CONTENIDO */
+    #screen-main {
+      padding: 20px 15px 80px;
+      justify-content: flex-start;
+    }
+
+    /* SEPARADOR ELEGANTE */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 25px 0;
+      width: 100%;
+    }
+
+    .section-divider .line {
+      height: 1px;
+      width: 90px;
+      background: linear-gradient(90deg, transparent, rgba(244, 114, 182, 0.6), transparent);
+    }
+
+    .section-divider .heart {
+      color: #f472b6;
+      margin: 0 10px;
+      font-size: 14px;
+      filter: drop-shadow(0 0 6px rgba(244, 114, 182, 0.4));
+    }
+
+    /* CONTADOR */
+    .counter-section {
+      text-align: center;
+      width: 100%;
+      padding-top: 10px;
+    }
+
+    .counter-title {
+      font-size: 2.2rem;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .counter-subtitle {
+      font-size: 0.85rem;
+      color: rgba(26,26,46,0.5);
+      margin-bottom: 20px;
+    }
+
+    .timer-grid {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .timer-card {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.15);
+      backdrop-filter: blur(10px);
+      width: 90px;
+      padding: 15px 5px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(244, 114, 182, 0.08);
+    }
+
+    .timer-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(180deg, #1a1a2e 0%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .timer-label {
+      font-size: 0.65rem;
+      color: #f472b6;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .time-capsule {
+      background: rgba(244, 114, 182, 0.08);
+      border: 1px solid rgba(244, 114, 182, 0.2);
+      padding: 8px 18px;
+      border-radius: 30px;
+      display: inline-block;
+      font-weight: 700;
+      color: #be185d;
+      margin-bottom: 10px;
+    }
+
+    .days-love {
+      color: rgba(26,26,46,0.8);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* MÚSICA DEAR YOU ESTILO CON ENCABEZADO */
+    .music-section {
+      width: 100%;
+    }
+
+    .music-card {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.15);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(244, 114, 182, 0.12);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .music-header {
+      margin-bottom: 18px;
+    }
+
+    .music-icon-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(244, 114, 182, 0.15);
+      border: 1px solid rgba(244, 114, 182, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .music-header h3 {
+      font-size: 1.4rem;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+
+    .music-header p {
+      font-size: 0.8rem;
+      color: rgba(26,26,46,0.55);
+    }
+
+    .music-player-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      background: white;
+      padding: 12px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .album-thumb {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .song-details {
+      text-align: left;
+      flex: 1;
+    }
+
+    .song-details h4 {
+      font-size: 0.9rem;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+
+    .song-details p {
+      font-size: 0.75rem;
+      color: #888;
+    }
+
+    audio {
+      width: 100%;
+      height: 38px;
+    }
+
+    /* SECCIÓN DEDICATORIA */
+    .dedication-section {
+      width: 100%;
+    }
+
+    .dedication-card {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.15);
+      border-radius: 24px;
+      padding: 25px 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .quote-icon {
+      font-size: 3rem;
+      color: rgba(244, 114, 182, 0.3);
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      line-height: 1;
+    }
+
+    .dedication-card p {
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: rgba(26,26,46,0.85);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HISTORIA / TIMELINE */
+    .timeline-section {
+      width: 100%;
+    }
+
+    .timeline-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .timeline-header h3 {
+      font-size: 1.6rem;
+      color: #1a1a2e;
+    }
+
+    .timeline-header p {
+      font-size: 0.8rem;
+      color: rgba(26,26,46,0.5);
+    }
+
+    .timeline-container {
+      position: relative;
+      padding-left: 35px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, #f472b6, transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .timeline-badge {
+      position: absolute;
+      left: -35px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(244, 114, 182, 0.06);
+      border: 2px solid #f472b6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f472b6;
+      font-size: 12px;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.2);
+    }
+
+    .timeline-card {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.15);
+      border-radius: 20px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .timeline-date {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #f472b6;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-title {
+      font-size: 1.05rem;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+
+    .timeline-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(244, 114, 182, 0.15);
+    }
+
+    /* CIERRE PREGUNTA DEAR YOU */
+    .closing-section {
+      width: 100%;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+
+    .closing-card {
+      background: rgba(244, 114, 182, 0.06);
+      border: 1px solid rgba(244, 114, 182, 0.15);
+      border-radius: 24px;
+      padding: 25px 20px;
+      box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1);
+    }
+
+    .closing-card h3 {
+      font-size: 1.25rem;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+    }
+
+    .closing-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-closing {
+      background: white;
+      color: #be185d;
+      border: 1px solid rgba(244, 114, 182, 0.3);
+      padding: 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.05);
+    }
+
+    .ws-response {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .btn-ws {
+      background-color: #25d366;
+      color: white;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+    }
+
+    @keyframes floatNote {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 15px 35px rgba(236, 72, 153, 0.3); }
+      50% { box-shadow: 0 15px 45px rgba(236, 72, 153, 0.6); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+
+    <!-- PANTALLA 1: CARTA / SOBRE DE ENTRADA -->
+    <div class="screen active" id="screen-1">
+      <div class="envelope-wrapper">
+        <div class="letter-note">
+          <p>“Eres mi historia, la historia que nunca deseo terminar.”</p>
+        </div>
+        <div class="envelope-body">
+          <div class="envelope-heart">♥</div>
+        </div>
+      </div>
+      <button class="btn-step1" onclick="goToScreen('screen-2')">ASÍ ES COMO EMPIEZA</button>
+    </div>
+
+    <!-- PANTALLA 2: BIENVENIDA DEAR YOU -->
+    <div class="screen" id="screen-2">
+      <div class="badge-tag">✨ Hecho con mucho cariño 💕</div>
+      <div class="mascot-img">🧸</div>
+      <h1 class="main-title">Hecho con amor,<br><span> para ti.</span></h1>
+      <p class="sub-text">Amor de mi vida preparé esta página con mucho cariño, espero que te guste y espero haberte sorprendido. 💖</p>
+      <button class="btn-primary" onclick="startExperience()">
+        <span>💖 Toca aquí, mi amor</span> ➔
+      </button>
+    </div>
+
+    <!-- PANTALLA 3: CONTENIDO PRINCIPAL -->
+    <div class="screen" id="screen-main">
+
+      <!-- 1. CONTADOR DE TIEMPO -->
+      <div class="counter-section">
+        <h2 class="counter-title">Para ti Mi Amor</h2>
+        <div class="counter-subtitle">
+          📅 Juntos desde 19 de octubre de 2022
+        </div>
+
+        <div class="timer-grid">
+          <div class="timer-card">
+            <div class="timer-value" id="years">00</div>
+            <div class="timer-label">AÑOS</div>
+          </div>
+          <div class="timer-card">
+            <div class="timer-value" id="months">00</div>
+            <div class="timer-label">MESES</div>
+          </div>
+          <div class="timer-card">
+            <div class="timer-value" id="days">00</div>
+            <div class="timer-label">DÍAS</div>
+          </div>
+        </div>
+
+        <div class="time-capsule" id="time-hours">
+          00 : 00 : 00
+        </div>
+
+        <div class="days-love" id="total-days">
+          ✨ Son 0 días de amor ✨
+        </div>
+      </div>
+
+      <!-- SEPARADOR DEAR YOU -->
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="heart">♥</div>
+        <div class="line"></div>
+      </div>
+
+      <!-- 2. NUESTRA MÚSICA CON ENCABEZADO Y PORTADA FOTO5.JPG -->
+      <div class="music-section">
+        <div class="music-card">
+          <div class="music-header">
+            <div class="music-icon-circle">🎵</div>
+            <h3>Nuestra Música</h3>
+            <p>La banda sonora de nuestro amor</p>
+          </div>
+
+          <div class="music-player-box">
+            <img src="foto5.jpg" class="album-thumb" alt="Portada de la canción">
+            <div class="song-details">
+              <h4>We fell in love in october</h4>
+              <p>Girl in Red 🍁</p>
+            </div>
+          </div>
+
+          <audio controls controlsList="nodownload">
+            <source src="wefellinloveinoctober.mp3" type="audio/mpeg">
+            Tu navegador no soporta reproducción de audio.
+          </audio>
+        </div>
+      </div>
+
+      <!-- SEPARADOR DEAR YOU -->
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="heart">♥</div>
+        <div class="line"></div>
+      </div>
+
+      <!-- 3. SECCIÓN DE DEDICATORIA -->
+      <div class="dedication-section">
+        <div class="dedication-card">
+          <div class="quote-icon">“</div>
+          <p>
+            "Amor de mi vida,<br><br>
+            Desde aquel 19 de octubre de 2022, mi mundo cambió por completo. Gracias por cada sonrisa, cada abrazo y por ser mi lugar seguro. Te amo más de lo que las palabras pueden expresar."
+          </p>
+        </div>
+      </div>
+
+      <!-- SEPARADOR DEAR YOU -->
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="heart">♥</div>
+        <div class="line"></div>
+      </div>
+
+      <!-- 4. NUESTRA HISTORIA -->
+      <div class="timeline-section">
+        <div class="timeline-header">
+          <div style="font-size:20px; margin-bottom:4px;">⏰</div>
+          <h3>Nuestra Historia</h3>
+          <p>Momentos que marcaron nuestro camino</p>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">♥</div>
+            <div class="timeline-card">
+              <div class="timeline-date">19 DE OCTUBRE DE 2022</div>
+              <div class="timeline-title">Donde todo empezó.</div>
+              <img src="foto1.jpg" class="timeline-img" alt="Foto 1">
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">✈</div>
+            <div class="timeline-card">
+              <div class="timeline-date">04 DE FEBRERO DE 2023</div>
+              <div class="timeline-title">Una de mis fotos favoritas.</div>
+              <img src="foto2.jpg" class="timeline-img" alt="Foto 2">
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">⭐</div>
+            <div class="timeline-card">
+              <div class="timeline-date">01 DE MARZO DE 2024</div>
+              <div class="timeline-title">El mejor día.</div>
+              <img src="foto3.jpg" class="timeline-img" alt="Foto 3">
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">📍</div>
+            <div class="timeline-card">
+              <div class="timeline-date">31 DE DICIEMBRE DE 2024</div>
+              <div class="timeline-title">Mi lugar favorito en el mundo, ¿El tuyo también?</div>
+              <img src="foto4.jpg" class="timeline-img" alt="Foto 4">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SEPARADOR DEAR YOU -->
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="heart">♥</div>
+        <div class="line"></div>
+      </div>
+
+      <!-- 5. CIERRE PREGUNTA -->
+      <div class="closing-section">
+        <div class="closing-card">
+          <h3>¿Sigamos construyendo momendos juntos</h3>
+          
+          <div class="closing-btns" id="question-btns">
+            <button class="btn-closing" onclick="answerQuestion('¡SÍ, AMOR! 💕')">¡SÍ, AMOR! 💕</button>
+            <button class="btn-closing" onclick="answerQuestion('CLARO QUE SI MI AMOR, PARA ESO VIVO ✨')">CLARO QUE SI MI AMOR, PARA ESO VIVO ✨</button>
+          </div>
+
+          <div class="ws-response" id="ws-container">
+            <p style="margin-bottom: 12px; font-weight: 600; color: #ec4899;">¡Sabía que dirías que sí! 🥰</p>
+            <a href="https://wa.me/595986467186?text=¡Mi%20amor!%20CLARO%20QUE%20QUIERO%20SEGUIR%20CONSTRUYENDO%20MÁS%20MOMENTOS%20A%20TU%20LADO%20MI%20VIDA.%20TE%20AMO%20SOS%20EL%20AMOR%20DE%20MI%20VIDA.%20POR%20VOS%20VIVO%20💕" target="_blank" class="btn-ws">
+              <span>Enviar respuesta a mi WhatsApp 💬</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const startDate = new Date(2022, 9, 19);
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    function startExperience() {
+      goToScreen('screen-main');
+    }
+
+    function updateCounter() {
+      const now = new Date();
+      let years = now.getFullYear() - startDate.getFullYear();
+      let months = now.getMonth() - startDate.getMonth();
+      let days = now.getDate() - startDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      document.getElementById('years').textContent = String(years).padStart(2, '0');
+      document.getElementById('months').textContent = String(months).padStart(2, '0');
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('time-hours').textContent = `${hours} : ${minutes} : ${seconds}`;
+
+      const diffTime = Math.abs(now - startDate);
+      const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById('total-days').textContent = `✨ Son ${totalDays} días de amor ✨`;
+    }
+
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    function answerQuestion(answerText) {
+      document.getElementById('question-btns').style.display = 'none';
+      document.getElementById('ws-container').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
